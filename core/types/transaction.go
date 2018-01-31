@@ -282,20 +282,21 @@ func (tx *Transaction) String() string {
 	}
 	enc, _ := rlp.EncodeToBytes(&tx.data)
 	return fmt.Sprintf(`
-	TX(%x)
-	Contract: %v
-	From:     %s
-	To:       %s
-	Nonce:    %v
-	GasPrice: %#x
-	GasLimit  %#x
-	Value:    %#x
-	Data:     0x%x
-	V:        %#x
-	R:        %#x
-	S:        %#x
-	Hex:      %x
-`,
+	{       
+       "TX":"%x",
+       "Contract": "%v",
+       "From":     "%s",
+       "To":       "%s",
+       "Nonce":    %v,
+       "GasPrice": "%#x",
+       "GasLimit": "%#x",
+       "Value":    "%#x",
+       "Data":     "0x%x",
+       "V":        "%#x",
+       "R":        "%#x",
+       "S":        "%#x",
+       "Hex":      "%x"
+}`,
 		tx.Hash(),
 		tx.data.Recipient == nil,
 		from,
