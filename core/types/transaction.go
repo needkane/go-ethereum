@@ -206,6 +206,12 @@ func (tx *Transaction) Hash() common.Hash {
 	return v
 }
 
+// SigHash returns the hash to be signed by the sender.
+// It does not uniquely identify the transaction.
+func (tx *Transaction) SigHash(signer Signer) common.Hash {
+	return signer.Hash(tx)
+}
+
 func (tx *Transaction) Size() common.StorageSize {
 	if size := tx.size.Load(); size != nil {
 		return size.(common.StorageSize)
@@ -282,20 +288,21 @@ func (tx *Transaction) String() string {
 	}
 	enc, _ := rlp.EncodeToBytes(&tx.data)
 	return fmt.Sprintf(`
-	TX(%x)
-	Contract: %v
-	From:     %s
-	To:       %s
-	Nonce:    %v
-	GasPrice: %#x
-	GasLimit  %#x
-	Value:    %#x
-	Data:     0x%x
-	V:        %#x
-	R:        %#x
-	S:        %#x
-	Hex:      %x
-`,
+	{	
+	"TX":"%x",
+	"Contract": "%v",
+	"From":     "%s",
+	"To":       "%s",
+	"Nonce":    %v,
+	"GasPrice": "%#x",
+	"GasLimit": "%#x",
+	"Value":    "%#x",
+	"Data":     "0x%x",
+	"V":        "%#x",
+	"R":        "%#x",
+	"S":        "%#x",
+	"Hex":      "%x"
+}`,
 		tx.Hash(),
 		tx.data.Recipient == nil,
 		from,
