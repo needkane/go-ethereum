@@ -119,3 +119,23 @@ func LeftPadBytes(slice []byte, l int) []byte {
 
 	return padded
 }
+
+func ParseData(data ...interface{}) (ret []byte) {
+	for _, item := range data {
+		switch t := item.(type) {
+		case string:
+			var str []byte
+			if isHex(t) {
+				str = Hex2Bytes(t[2:])
+			} else {
+				str = []byte(t)
+			}
+
+			ret = append(ret, RightPadBytes(str, 32)...)
+		case []byte:
+			ret = append(ret, LeftPadBytes(t, 32)...)
+		}
+	}
+
+	return
+}
